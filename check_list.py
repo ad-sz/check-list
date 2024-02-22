@@ -1,4 +1,10 @@
 import tkinter as tk
+from buttons import create_button_ok_nok
+
+#function for saving the choices
+def save_choices():
+    choices_list = [choice_1.get(), choice_2.get(), choice_3.get()]
+    print("Wybory użytkownika:", choices_list)
 
 #creating main window
 tpm_window = tk.Tk()
@@ -13,32 +19,14 @@ tpm_window.title("TPM wytłaczarki")
 frame = tk.Frame(tpm_window)
 frame.pack(padx=10, pady=10)
 
-#setting variable for user choice
-choice = tk.StringVar(value="none")
+choice_1 = create_button_ok_nok(frame, what_is_checking="Test 1")
+choice_2 = create_button_ok_nok(frame, what_is_checking="Test 2")
+choice_3 = create_button_ok_nok(frame, what_is_checking="Test 3")
 
-#create and placing text in the frame
-label = tk.Label(frame, text="Sprawdzenie zaworów", font=('Arial', 18))
-label.pack(side=tk.LEFT, padx=8)
+#buttom "save" for saving choices
+save_button = tk.Button(tpm_window, text="Zapisz", command=save_choices, font=('Arial', 16), padx=20, pady=10)
+save_button.pack(pady=15)
 
-#create frame for buttons
-radio_frame = tk.Frame(frame)
-radio_frame.pack(side=tk.RIGHT)
-
-#define style for radio buttons
-radiobutton_style = ('Arial', 20)
-
-#define buttom size
-radiobutton_width = 10
-
-#define space around buttoms
-padx_pady = 8
-
-#create frame for buttons
-radiobutton_ok = tk.Radiobutton(radio_frame, text="OK", variable=choice, value="ok", font=radiobutton_style, indicatoron=0, width=radiobutton_width, padx=padx_pady, pady=padx_pady, anchor='n')
-radiobutton_ok.pack(side=tk.LEFT)
-
-radiobutton_nok = tk.Radiobutton(radio_frame, text="NOK", variable=choice, value="nok", font=radiobutton_style, indicatoron=0, width=radiobutton_width, padx=padx_pady, pady=padx_pady, anchor='n')
-radiobutton_nok.pack(side=tk.RIGHT)
 
 #showing window
 tpm_window.mainloop()
