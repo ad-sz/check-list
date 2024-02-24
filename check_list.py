@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import csv
 from buttons import create_button_ok_nok
 
 #function for preparing main window
@@ -36,7 +37,7 @@ def show_login_window():
     tk.Label(login_window, text="Wybierz użytkownika:", font=('Arial', 12)).pack(pady=10)
 
     #create users list
-    users = ["Użytkownik 1", "Użytkownik 2", "Użytkownik 3"]
+    users = ["Adam Nowak", "Jan Kowalski", "Adam Ul"]
     global selected_user
     selected_user = tk.StringVar()
     user_combobox = ttk.Combobox(login_window, textvariable=selected_user, values=users, state="readonly")
@@ -48,7 +49,13 @@ def show_login_window():
 
 #function for saving the choices
 def save_choices():
-    choices_list = [selected_user.get(), choice_1.get(), choice_2.get(), choice_3.get()]
+    choices_list = [selected_user.get().lower(), choice_1.get(), choice_2.get(), choice_3.get()]
+    filename = "D:/python_data/projekt/check_lista/check-list/records.csv"
+    with open(filename, mode="a", newline="") as records_csv:
+        new_records_csv = csv.writer(records_csv, delimiter=";")
+        new_records_csv.writerow(choices_list)
+
+    #only for checking if saving works
     print("Wybory użytkownika:", choices_list)
 
     #hide main window(logging out after put "save" button)
