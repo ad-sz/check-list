@@ -37,6 +37,7 @@ def show_login_window():
 
     #create users list
     users = ["Użytkownik 1", "Użytkownik 2", "Użytkownik 3"]
+    global selected_user
     selected_user = tk.StringVar()
     user_combobox = ttk.Combobox(login_window, textvariable=selected_user, values=users, state="readonly")
     user_combobox.pack(pady=5)
@@ -47,8 +48,26 @@ def show_login_window():
 
 #function for saving the choices
 def save_choices():
-    choices_list = [choice_1.get(), choice_2.get(), choice_3.get()]
+    choices_list = [selected_user.get(), choice_1.get(), choice_2.get(), choice_3.get()]
     print("Wybory użytkownika:", choices_list)
+
+    #hide main window(logging out after put "save" button)
+    tpm_window.withdraw()
+
+    #reset variables in aplication
+    reset_app_state()
+
+    #showilng loggin window again
+    show_login_window()
+
+
+#function for reset aplication
+def reset_app_state():
+    global selected_user, choice_1, choice_2, choice_3
+    selected_user.set("")
+    choice_1.set("")
+    choice_2.set("")
+    choice_3.set("")
 
 
 #initialization of the main Tkinter window
