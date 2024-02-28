@@ -1,13 +1,26 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 
 
-def create_button_ok_nok(frame, what_is_checking):
+def create_button_ok_nok(frame, what_is_checking, image_file_path):
     #setting variable for user choice
     choice = tk.StringVar(value="none")
 
     #create and placing text in the frame
     label = tk.Label(frame, text=what_is_checking, font=('Arial', 18))
     label.pack(side=tk.TOP, padx=8, pady=(0, 20))
+
+    #load and display jpg image
+    image = Image.open(image_file_path)
+
+    #convert picture for tkinter format
+    photo = ImageTk.PhotoImage(image)
+
+    #create label and assigment the picture
+    image_label = tk.Label(frame, image=photo)
+    image_label.image = photo
+
+    image_label.pack(side=tk.TOP, pady=(0, 20))
 
     #create frame for buttons
     radio_frame = tk.Frame(frame)

@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import Canvas, Scrollbar, Frame
 import csv
 import tkinter.messagebox
+from PIL import Image, ImageTk
 from buttons import create_button_ok_nok
 
 #function for verify user
@@ -18,23 +20,37 @@ def verify_user(barcode):   #variable "barcode" store scanned user's barcode for
 
 #function for preparing main window
 def prepare_main_window():
-    tpm_window.geometry("800x500")   #setting size of the window
+    tpm_window.geometry("480x600")   #setting size of the window
     tpm_window.title("TPM wytłaczarki")   #setting title of the window
+
+    #create canvas and scrollbar
+    canvas = Canvas(tpm_window)
+    scrollbar = Scrollbar(tpm_window, orient='vertical', command=canvas.yview, width=40)
+
+    #packing canvas and scrollbar
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(30, 20))
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    #canvas configuration
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
     
-    #create frame for grouping text and buttons
-    frame = tk.Frame(tpm_window)
-    frame.pack(padx=10, pady=10)
+    #create frame inside canvas where elements can be add
+    frame = Frame(canvas)
+
+    #adding frame to canvas window
+    canvas.create_window((0, 0), window=frame, anchor="nw")
 
     #create variables storing the user's choices as global 
     global choice_1, choice_2, choice_3
 
     #variables for storing choices of the user, create radiobuttons by using function
-    choice_1 = create_button_ok_nok(frame, what_is_checking="Test 1")
-    choice_2 = create_button_ok_nok(frame, what_is_checking="Test 2")
-    choice_3 = create_button_ok_nok(frame, what_is_checking="Test 3")
+    choice_1 = create_button_ok_nok(frame, what_is_checking="Test 1", image_file_path='D:/python_data/projekt/check_lista/check-list/sample_1.jpg')
+    choice_2 = create_button_ok_nok(frame, what_is_checking="Test 2", image_file_path='D:/python_data/projekt/check_lista/check-list/sample_2.jpg')
+    choice_3 = create_button_ok_nok(frame, what_is_checking="Test 3", image_file_path='D:/python_data/projekt/check_lista/check-list/sample_3.jpg')
 
     #buttom "save" for saving choices
-    save_button = tk.Button(tpm_window, text="Zapisz", command=save_choices, font=('Arial', 16), padx=20, pady=10)   #command=save_choices - after push button function save_choices is done
+    save_button = tk.Button(frame, text="Zapisz", command=save_choices, font=('Arial', 16), padx=25, pady=15)
     save_button.pack(pady=15)
 
 #function called after login that shows the main window
