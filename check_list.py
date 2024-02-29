@@ -18,12 +18,17 @@ def verify_user(barcode):   #variable "barcode" store scanned user's barcode for
         print(f"Wystąpił wyjątek: {e}")
     return None, None   #if user's id is not found, function return tuple None, None
 
+#function for using mouse scroll
+def on_mousewheel(event):
+    canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
 #function for preparing main window
 def prepare_main_window():
     tpm_window.geometry("480x600")   #setting size of the window
     tpm_window.title("TPM wytłaczarki")   #setting title of the window
 
     #create canvas and scrollbar
+    global canvas
     canvas = Canvas(tpm_window)
     scrollbar = Scrollbar(tpm_window, orient='vertical', command=canvas.yview, width=40)
 
@@ -52,6 +57,9 @@ def prepare_main_window():
     #buttom "save" for saving choices
     save_button = tk.Button(frame, text="Zapisz", command=save_choices, font=('Arial', 16), padx=25, pady=15)
     save_button.pack(pady=15)
+
+    #assigning mouse scroll event
+    tpm_window.bind_all("<MouseWheel>", on_mousewheel)
 
 #function called after login that shows the main window
 def on_login(barcode): 
